@@ -19,10 +19,10 @@ The tool automatically tests the quickest to verify protocols first in order to 
 ###Installation
 There are binaries for x64 Ubuntu 16.04 and OS X El Capitan on the release page. Alternatively you can build from source:
 
-Git Clone / Download the repo, ensure python v3.5 and pip are installed, then run the following commands
+Git Clone / Download the repo, ensure python v3.5 and pip3 are installed, then run the following commands
 
 ```
-pip3.5 install tqdm blessings pyinstaller
+pip3 install tqdm blessings pyinstaller
 pyinstaller src/tamarin-tester.py --onefile
 ```
 If you wish to add the binary to your system path for convenience, it is suggested to put it in the same folder as default for the tamarin-prover. 
@@ -46,13 +46,14 @@ Where `TAMARIN` is the path to the development tamarin build you want to test, `
 This will run the test and display a live progress report. Pay attention to the estimated time as testing can take some time. It will finish with a summary detailing one of `PASS`, `FAIL`, `????`. The first two are self-explanatory. `????` is reported when their are protocol files in the directory which have no benchmark, when their are protocol files in the directory which have no lemmas (usually because of an `IFDEF`) or if the step counts change for a particular proof, but otherwise no actual failures occur.  
 
 ##Comand Line Options
-The path to the Tamarin build you want to bench or test is mandatory. For benchmark mode, selected by passing `-b` or `--benchmark`:
+The path to the Tamarin build you want to bench or test is mandatory. For benchmark mode, selected by passing `--benchmark`:
 
 | Long Option | Short Option | Default | Description
 | --- | --- | --- | --- |
 |--protocols | -p | Working Directory | The directory containing protocols you want to test/benchmark |
 |--verbose | -v | FLAG | Runs tamarin-tester with additional log messages |
-|--repetitions | -r | 1 | When running in benchmark mode, the number of samples to take to for the expected average runtime. WARNING `-r 2` will DOUBLE the runtime of `-r 1` |
+|--flags | | User defined flags to pass to the tamarin binary every time it is invoked. See below for how to pass flags  per-protocol |
+|--repetitions | | 1 | When running in benchmark mode, the number of samples to take to for the expected average runtime. WARNING `-r 2` will DOUBLE the runtime of `-r 1` |
 |--maxproof | -mp | NA | Denotes the maximum time to wait for tamarin-prover to return a proof. Mandatory for benchmark mode |
 |--maxcheck | -mc | NA | Denotes the maximum time to wait for tamarin-prover to return a well-formedness check. Mandatory for benchmark mode. |
 |--output | -o | Protocols Directory | In Benchmark Mode, the path to write the benchmark to |
@@ -63,7 +64,8 @@ Otherwise, tamarin-tester runs in test mode:
 | --- | --- | --- | --- |
 |--protocols | -p | Working Directory | The directory containing protocols you want to test/benchmark |
 |--verbose | -v | FLAG | Runs tamarin-tester with additional log messages |
-|--contingency | -c | 2 | When running in test mode, tamarin-tester will wait for tamarin-prover to return a result in at most contingency * expected_runtime for a given protocol.| 
+|--flags | | User defined flags to pass to the tamarin binary every time it is invoked. See below for how to pass flags  per-protocol |
+|--contingency | | 2 | When running in test mode, tamarin-tester will wait for tamarin-prover to return a result in at most contingency * expected_runtime for a given protocol.| 
 |--maxproof | -mp | NA | Denotes the maximum time to wait for tamarin-prover to return a proof. In Test mode this defaults to a value calculated from the benchmark file. |
 |--maxcheck | -mc | NA | Denotes the maximum time to wait for tamarin-prover to return a well-formedness check. In this TESt mode this defaults to a value calculated from the benchmark file. |
 |--input | -i | Protocols Directory | In Test Mode, the path to read the benchmark from |
